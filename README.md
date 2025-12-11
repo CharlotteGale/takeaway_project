@@ -20,6 +20,12 @@
 
 
 ## Class Interfaces
+### Overlord: `OrderManager()`
+```py
+class OrderManager:
+    pass
+```
+
 ### `Menu()`
 ```py
 class Menu:
@@ -35,6 +41,7 @@ class Menu:
 
 ```
 
+### `Orders()`
 ```py
 class Orders:
     def __init__(self, menu):
@@ -53,6 +60,7 @@ class Orders:
         pass
 ```
 
+### `Receipts()`
 ```py
 class Receipts:
     def __init__(self, order):
@@ -76,10 +84,9 @@ class Receipts:
 
     def __format_currency(self, price):
         pass
-
-
 ```
 
+### `SMSService()`
 ```py
 class SMSService:
     def send_sms_confirmation(self):
