@@ -4,12 +4,20 @@ import pytest
 
 def test_menu_items_dict_created_on_init():
     # __init__
+    """
+    On init
+    Ensure self.menu_items receives the dictionary imported from menu_data.py
+    """
     menu = Menu()
 
     assert menu.menu_items == MENU_ITEMS
 
 def test_menu_list_displays_menu_items():
     # menu_list
+    """
+    When called, menu_list should
+    return self.menu_items
+    """
     menu = Menu()
 
     assert menu.menu_list() == menu.menu_items

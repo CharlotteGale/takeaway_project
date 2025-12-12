@@ -162,6 +162,7 @@ class SMSService:
 ```
 
 ## Test Examples
+### `OrderManager` Unit Tests
 ```py
     # __init__
     """
@@ -173,62 +174,93 @@ class SMSService:
     assert order_manager.phone_number == "07123456789"
 ```
 
-```py 
-    # __init
+### `Menu` Unit Tests
+```py
+    # __init__
     """
     On init
-    Ensure self.menu and self.order created on instantiation
+    Ensure self.menu_items receives the dictionary imported from menu_data.py
     """
-    fake_menu = Mock()
-    fake_order = Mock()
-    fake_receipt = Mock()
-    fake_sms_service = Mock()
-    order_manager = OrderManager(
-        "07123456789",
-        menu=fake_menu,
-        order=fake_order,
-        receipt=fake_receipt,
-        sms_service=fake_sms_service
-        )
+    menu = Menu()
 
-    assert order_manager.menu == fake_menu
-    assert order_manager.order == fake_order
-    assert order_manager.receipt == fake_receipt
-    assert order_manager.sms_service == fake_sms_service
+    assert menu.menu_items == MENU_ITEMS
+```
+```py
+    # menu_list
+    """
+    When called, menu_list should
+    return self.menu_items
+    """
+    menu = Menu()
+
+    assert menu.menu_list() == menu.menu_items
+```
+
+### `Order` Unit Tests
+
+```py
+    # __init__
+    """
+    On initialisation
+    Ensure order_items is an empty dictionary
+    """
+    order = Order()
+
+    assert order.order_items == {}
+```
+```py
+    # add_to_order
+    """
+    When called with an item and a quantity
+    Ensure the params are added to order_items
+    """
+    order = Order()
+
+    order.add_to_order("Pad Thai", 2)
+
+    assert order.order_items == {"Pad Thai": 2}
+
+```
+
+### Integration Tests
+```py
+    # __init__
+    """
+    On init
+    Ensure instance variables created on instantiation
+    """
+    order_manager = OrderManager("07123456789")
+
+    assert isinstance(order_manager.menu, Menu)
+    assert isinstance(order_manager.order, Order)
+    assert isinstance(order_manager.receipt, Receipt)
+    assert isinstance(order_manager.sms_service, SMSService)
+
 ```
 
 ```py
     # show_menu
     """
     When OrderManager.show_menu is invoked
-    Return fake_menu_list
+    Return Menu.menu_list
     """
-    fake_menu = Mock()
-    fake_menu.menu_list.return_value = list(MENU_ITEMS.keys())
-    order_manager = OrderManager("07123456789", menu=fake_menu)
+    order_manager = OrderManager("07123456789")
+    menu = Menu()
 
-    assert order_manager.show_menu() == fake_menu.menu_list
+    assert order_manager.show_menu() == menu.menu_list()
 ```
 
 ```py
+    # add_item
+    """
+    Given an item and an optional quantity that defaults to one
+    Call Order.add_to_order(item, quantity)
+    """
+    order_manager = OrderManager("07123456789")
 
-```
-```py
+    order_manager.add_items("Pad Thai", 2)
 
-```
-```py
-
-```
-```py
-
-```
-```py
-
-```
-```py
-
-```
-```py
+    assert "Pad Thai" in order_manager.order.order_items
 
 ```
 ```py
