@@ -23,7 +23,39 @@
 ### Overlord: `OrderManager()`
 ```py
 class OrderManager:
-    pass
+    def __init__(self, phone_number, sms_service=None):
+        # Parameters:
+        #   phone_number: string (e.g. "07123456789")
+        #   sms_service=None: optional instance of SMSService
+        # Internal State:
+        #   self.phone_number: stores the phone number
+        #   self.menu: instance of Menu()
+        #   self.order: instance of Order()
+        #   self.sms_service: instance of SMSService() or injected mock
+        pass
+
+    def show_menu(self):
+        # Returns:
+        #   Menu.menu_list
+        pass
+
+    def add_item(self, item, quantity=1):
+        # Parameters:
+        #   item: string
+        #   quantity: int (default 1)
+        # Side Effects:
+        #   calls Order.add_to_order(item, quantity)
+        pass
+    
+    def show_receipt(self):
+        # Returns:
+        #   Receipt.generate_receipt
+        pass
+
+    def place_order(self):
+        # Side Effects:
+        #   calls SMSService.send_sms_confirmation() with phone number and message
+        pass
 ```
 
 ### `Menu()`
@@ -31,7 +63,7 @@ class OrderManager:
 class Menu:
     def __init__(self):
         # Internal State:
-        #   self.menu_items = [] OR {}: empty list OR dictionary created on instantiation
+        #   self.menu_items = {}: empty dict created on instantiation
         pass
 
     def menu_list(self):
@@ -41,57 +73,92 @@ class Menu:
 
 ```
 
-### `Orders()`
+### `Order()`
 ```py
-class Orders:
+class Order:
     def __init__(self, menu):
         # Parameters:
         #   instance of Menu
         # Internal State:
-        #   self.order_items = [] OR {}: empty list OR dict created on instantiation
+        #   self.order_items = []: empty list created on instantiation
         pass
 
-    def add_to_order(self, item, quantity=1):
+    def add_to_order(self, item, quantity):
         # Parameters:
         #   item: string
-        #   quanitity: int defaulted to 1
+        #   quanitity: int
         # Side Effects:
         #   adds item, price, and quantity to self.order_items
         pass
 ```
 
-### `Receipts()`
+### `Receipt()`
 ```py
-class Receipts:
+class Receipt:
     def __init__(self, order):
         # Parameters:
         #   instance of Order
         pass
 
     def generate_receipt(self):
+        # Returns:
+        #   a list showing an itemised receipt, with item and formatted currency
+        #   and the grand total.
         pass
 
-    def __calculate_subtotals(self, quantity, price):
+    def __calculate_subtotals(self):
+        # Returns:
+        #   a dictionary after looping through self.order
+        pass
+
+    def __calculate_totals(self, subtotals):
         # Parameters:
-        #   orders.quantity: int
-        #   orders.price: float
-        # Side Effects:
-        #   
+        #   subtotals: dictionary (from __calculate_subtotals)
+        # Returns:
+        #   adds all subtotals together and returns a float
         pass
 
-    def __calculate_totals(self, subtotals_list):
-        pass
-
-    def __format_currency(self, price):
+    def __format_currency(self, grand_total):
+        # Parameters:
+        #   grand_total: float
+        # Returns:
+        #   string formatted as '£0.00'
         pass
 ```
 
 ### `SMSService()`
 ```py
 class SMSService:
-    def send_sms_confirmation(self):
+    def __init__(self, api_key=None):
+        # Parameters:
+        #   api_key: string, optional (defaults to env variable or config)
+        # Internal State:
+        #   self.api_key: stored API key for SMS service
+        #   self.api_url: SMS service endpoint URL
         pass
 
-    def __call_sms_api(self):
+    def send_confirmation(self, phone_number, message):
+        # Parameters:
+        #   phone_number: string (e.g. "07123456789")
+        #   message: string (the confirmation text)
+        # Side Effects:
+        #   calls __call_sms_api to send SMS
+        # Returns:
+        #   boolean: True if successful, False if failed
+        pass
+
+    def __call_sms_api(self, phone_number, message):
+        # Parameters:
+        #   phone_number: string 
+        #   message: string
+        # Side Effects:
+        #   Makes HTTP POST request to SMS API
+        #   Sends an actual SMS
+        # Returns:
+        #   API response object or error
+        # Notes:
+        #   This method will be mocked in tests
         pass
 ```
+
+## Test Examples
