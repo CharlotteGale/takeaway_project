@@ -162,3 +162,108 @@ class SMSService:
 ```
 
 ## Test Examples
+```py
+    # __init__
+    """
+    On init
+    Ensure phone number stored as string
+    """
+    order_manager = OrderManager("07123456789")
+
+    assert order_manager.phone_number == "07123456789"
+```
+
+```py 
+    # __init
+    """
+    On init
+    Ensure self.menu and self.order created on instantiation
+    """
+    fake_menu = Mock()
+    fake_order = Mock()
+    fake_receipt = Mock()
+    fake_sms_service = Mock()
+    order_manager = OrderManager(
+        "07123456789",
+        menu=fake_menu,
+        order=fake_order,
+        receipt=fake_receipt,
+        sms_service=fake_sms_service
+        )
+
+    assert order_manager.menu == fake_menu
+    assert order_manager.order == fake_order
+    assert order_manager.receipt == fake_receipt
+    assert order_manager.sms_service == fake_sms_service
+```
+
+```py
+    # show_menu
+    """
+    When OrderManager.show_menu is invoked
+    Return fake_menu_list
+    """
+    fake_menu = Mock()
+    fake_menu.menu_list.return_value = list(MENU_ITEMS.keys())
+    order_manager = OrderManager("07123456789", menu=fake_menu)
+
+    assert order_manager.show_menu() == fake_menu.menu_list
+```
+
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
+```py
+
+```
